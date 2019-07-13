@@ -6,7 +6,7 @@
 //  Copyright (c) 2018 Bold Lion. All rights reserved.
 
 
-class Message {
+struct Message {
     
     var sender: String = ""
     var text: String = ""
@@ -16,7 +16,7 @@ class Message {
 extension Message {
     
     static func transformSnapshotToMessage(dict: [String: Any], key: String) -> Message {
-        let message = Message()
+        var message = Message()
         message.key = key
         message.sender = dict["sender"] as! String
         message.text = dict["text"] as! String

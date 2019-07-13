@@ -21,7 +21,7 @@ class RegisterViewController: UIViewController {
 
         Api.Auth.registerUser(with: email, password: password, onError: { error in
             SVProgressHUD.showError(withStatus: error)
-        }, onSuccess: {
+        }, onSuccess: { [unowned self] in
             SVProgressHUD.dismiss()
             self.performSegue(withIdentifier: "goToChat", sender: nil)
         })

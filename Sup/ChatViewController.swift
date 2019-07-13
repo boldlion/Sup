@@ -30,7 +30,7 @@ class ChatViewController: UIViewController {
     }
     
     func fetchMessages() {
-        Api.Message.getMessages(onSuccess: { message in
+        Api.Message.getMessages(onSuccess: { [unowned self] message in
             self.messages.append(message)
             self.messageTableView.reloadData()
         }, onError: { error in
@@ -47,7 +47,7 @@ class ChatViewController: UIViewController {
         
         Api.Message.sendMessage(text: text, onError: { error in
             SVProgressHUD.showError(withStatus: error)
-        }, onSuccess: {
+        }, onSuccess: { [unowned self] in
             self.sendButton.isEnabled = true
             self.messageTextfield.isEnabled = true
             self.messageTextfield.text = ""
@@ -57,7 +57,7 @@ class ChatViewController: UIViewController {
     @IBAction func logOutPressed(_ sender: AnyObject) {
         Api.Auth.logout(onError: { errorMessage in
             SVProgressHUD.showError(withStatus: errorMessage)
-        }, onSuccess: {
+        }, onSuccess: { [unowned self] in
              guard self.navigationController?.popToRootViewController(animated: true) != nil else { return }
         })
     }
@@ -69,14 +69,14 @@ class ChatViewController: UIViewController {
     
     @objc func keyboardWillShow(_ notification: NSNotification) {
         let keyboardFrame = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as AnyObject).cgRectValue
-        UIView.animate(withDuration: 0.1) {
+        UIView.animate(withDuration: 0.1) { [unowned self] in
             self.heightConstraint.constant = keyboardFrame!.height + 50
             self.view.layoutIfNeeded()
         }
     }
     
     @objc func keyboardWillHide(_ notification: NSNotification) {
-        UIView.animate(withDuration: 0.1) {
+        UIView.animate(withDuration: 0.1) { [unowned self] in
             self.heightConstraint.constant = 50
             self.view.endEditing(true)
             self.view.layoutIfNeeded()
