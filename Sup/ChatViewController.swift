@@ -63,12 +63,12 @@ class ChatViewController: UIViewController {
     }
     
     private func setKeyboardNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     @objc func keyboardWillShow(_ notification: NSNotification) {
-        let keyboardFrame = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as AnyObject).cgRectValue
+        let keyboardFrame = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as AnyObject).cgRectValue
         UIView.animate(withDuration: 0.1) { [unowned self] in
             self.heightConstraint.constant = keyboardFrame!.height + 50
             self.view.layoutIfNeeded()
@@ -115,7 +115,7 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
         messageTableView.delegate = self
         messageTableView.dataSource = self
         messageTableView.register(UINib(nibName: "MessageCell", bundle: nil), forCellReuseIdentifier: "customMessageCell")
-        messageTableView.rowHeight = UITableViewAutomaticDimension
+        messageTableView.rowHeight = UITableView.automaticDimension
         messageTableView.estimatedRowHeight = 81
     }
     
